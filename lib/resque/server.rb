@@ -133,6 +133,12 @@ module Resque
 
     end
 
+    if ENV["RESQUE_WEB_HTTP_BASIC_AUTH_USER"] && ENV["RESQUE_WEB_HTTP_BASIC_AUTH_PASSWORD"]
+      use Rack::Auth::Basic do |username, password|
+        username == ENV["RESQUE_WEB_HTTP_BASIC_AUTH_USER"] and password == ENV["RESQUE_WEB_HTTP_BASIC_AUTH_PASSWORD"]
+      end
+    end
+
     def show(page, layout = true)
       response["Cache-Control"] = "max-age=0, private, must-revalidate"
       begin
